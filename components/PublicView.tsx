@@ -64,7 +64,7 @@ export function PublicView({
   return (
     <main className="mx-auto max-w-3xl px-4 py-6 pb-16">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Centros de acopio</h1>
+        <h1 className="text-2xl font-bold text-foreground">Refugios</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Necesidades actualizadas en tiempo real. Llama antes de llevar algo para confirmar.
         </p>
@@ -132,7 +132,7 @@ function CentroCard({ centro, items }: { centro: Centro; items: Insumo[] }) {
   const ubicacion = [centro.zona, centro.estado].filter(Boolean).join(", ");
 
   const mensajeWhatsapp = encodeURIComponent(
-    `Centro de acopio: ${centro.nombre}\nDirección: ${centro.direccion}${
+    `Refugio: ${centro.nombre}\nDirección: ${centro.direccion}${
       ubicacion ? ` (${ubicacion})` : ""
     }\nContacto: ${centro.contacto}\n\nNecesidades:\n${
       items.map((i) => `- ${i.nombre} (${estadoDeInsumo(i)})`).join("\n") || "Sin pendientes por ahora"

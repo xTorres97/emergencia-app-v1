@@ -33,7 +33,7 @@ export default async function DashboardPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-bold text-foreground">Tus centros de acopio</h1>
+        <h1 className="text-xl font-bold text-foreground">Tus Refugios</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Selecciona un centro para actualizar sus necesidades, o crea uno nuevo.
         </p>
@@ -69,7 +69,7 @@ export default async function DashboardPage({
 
       <Card className="p-5">
         <h2 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
-          <Plus className="h-4 w-4" /> Crear nuevo centro de acopio
+          <Plus className="h-4 w-4" /> Crear nuevo Refugio
         </h2>
         <form action={crearCentro} className="flex flex-col gap-3">
           <Input name="nombre" required placeholder="Nombre del centro" />

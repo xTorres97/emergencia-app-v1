@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
-  title: "Ayuda Emergencia — Centros de acopio",
-  description: "Necesidades de los centros de acopio en tiempo real.",
+  title: "Ayuda Emergencia — Refugios",
+  description: "Necesidades de los Refugios en tiempo real.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
