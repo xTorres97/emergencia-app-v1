@@ -19,19 +19,19 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const perfil = profile as Profile | null;
 
   return (
-    <div className="min-h-screen">
-      <nav className="flex items-center justify-between border-b border-line bg-surface px-4 py-3">
+    <div className="min-h-screen bg-background">
+      <nav className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card px-4 py-3">
         <div>
-          <span className="font-semibold text-ink">Panel de encargado</span>
-          <span className="ml-2 text-sm text-muted">{perfil?.nombre}</span>
+          <span className="hidden font-semibold text-foreground sm:inline">Panel de encargado</span>
+          <span className="text-sm text-muted-foreground sm:ml-2">{perfil?.nombre}</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {perfil?.rol === "admin" && (
-            <a href="/admin" className="text-sm text-brand hover:underline">
+            <a href="/admin" className="text-sm text-primary hover:underline">
               Administración
             </a>
           )}
-          <a href="/" className="text-sm text-muted hover:underline">
+          <a href="/" className="text-sm text-muted-foreground hover:underline">
             Ver vista pública
           </a>
           <form action={cerrarSesion}>

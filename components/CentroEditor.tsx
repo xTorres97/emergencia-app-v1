@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Centro, Insumo, CATEGORIAS, ESTADOS_VENEZUELA, Categoria, estadoDeInsumo } from "@/types/database";
 import { Card } from "@/components/ui/card";
@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 import { EstadoBadge } from "@/components/EstadoBadge";
 import { formatoHoraVenezuela } from "@/lib/time";
 import { Minus, Plus, Trash2, Save } from "lucide-react";
+
+const fieldClass =
+  "w-full rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
 
 export function CentroEditor({
   centroInicial,
@@ -20,7 +23,6 @@ export function CentroEditor({
   const supabase = createClient();
   const [centro, setCentro] = useState(centroInicial);
   const [insumos, setInsumos] = useState<Insumo[]>(insumosIniciales);
-  const [, startTransition] = useTransition();
 
   useEffect(() => {
     const canal = supabase
@@ -100,14 +102,14 @@ export function CentroEditor({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <a href="/dashboard" className="text-sm text-muted hover:underline">
+        <a href="/dashboard" className="text-sm text-muted-foreground hover:underline">
           ← Tus centros
         </a>
-        <h1 className="mt-1 text-xl font-bold text-ink">{centro.nombre}</h1>
+        <h1 className="mt-1 text-xl font-bold text-foreground">{centro.nombre}</h1>
       </div>
 
       <Card className="p-5">
-        <h2 className="mb-3 font-semibold text-ink">Datos del centro</h2>
+        <h2 className="mb-3 font-semibold text-foreground">Datos del centro</h2>
         <form onSubmit={guardarCentro} className="flex flex-col gap-3">
           <Campo label="Dirección">
             <textarea
@@ -115,18 +117,16 @@ export function CentroEditor({
               defaultValue={centro.direccion}
               required
               rows={2}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring resize-none"
+              className={`${fieldClass} resize-none`}
             />
           </Campo>
           <Campo label="Estado">
-            <select
-              name="estado"
-              defaultValue={centro.estado ?? ""}
-              className="rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
-            >
+            <select name="estado" defaultValue={centro.estado ?? ""} className={fieldClass}>
               <option value="">— Sin especificar —</option>
               {ESTADOS_VENEZUELA.map((e) => (
-                <option key={e} value={e}>{e}</option>
+                <option key={e} value={e}>
+                  {e}
+                </option>
               ))}
             </select>
           </Campo>
@@ -150,16 +150,14 @@ export function CentroEditor({
       </Card>
 
       <Card className="p-5">
-        <h2 className="mb-3 font-semibold text-ink">Agregar necesidad</h2>
+        <h2 className="mb-3 font-semibold text-foreground">Agregar necesidad</h2>
         <form onSubmit={agregarInsumo} className="grid grid-cols-2 gap-3 sm:grid-cols-5">
           <Input name="nombre" required placeholder="Ej: Agua embotellada" className="col-span-2 sm:col-span-2" />
-          <select
-            name="categoria"
-            defaultValue="comida"
-            className="col-span-1 rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
-          >
+          <select name="categoria" defaultValue="comida" className={`col-span-1 ${fieldClass}`}>
             {CATEGORIAS.map((c) => (
-              <option key={c.value} value={c.value}>{c.label}</option>
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
             ))}
           </select>
           <Input name="cantidad_necesaria" type="number" min={1} defaultValue={1} placeholder="Cant." />
@@ -171,17 +169,19 @@ export function CentroEditor({
       </Card>
 
       <Card className="p-5">
-        <h2 className="mb-3 font-semibold text-ink">Necesidades actuales</h2>
-        {insumos.length === 0 && <p className="text-sm text-muted">Aún no has agregado necesidades.</p>}
+        <h2 className="mb-3 font-semibold text-foreground">Necesidades actuales</h2>
+        {insumos.length === 0 && (
+          <p className="text-sm text-muted-foreground">Aún no has agregado necesidades.</p>
+        )}
         <div className="flex flex-col gap-2">
           {insumos.map((i) => (
             <div
               key={i.id}
-              className="flex flex-wrap items-center justify-between gap-3 rounded-[10px] border border-line p-3"
+              className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border p-3"
             >
               <div className="min-w-0 flex-1">
-                <p className="font-medium text-ink">{i.nombre}</p>
-                <p className="text-xs text-muted">
+                <p className="font-medium text-foreground">{i.nombre}</p>
+                <p className="text-xs text-muted-foreground">
                   {CATEGORIAS.find((c) => c.value === i.categoria)?.label} · solicitado{" "}
                   {formatoHoraVenezuela(i.created_at)}
                 </p>
@@ -191,19 +191,19 @@ export function CentroEditor({
                 <Button
                   type="button"
                   variant="secondary"
-                  size="sm"
+                  size="icon-sm"
                   onClick={() => actualizarCubierta(i, -1)}
                   disabled={i.cantidad_cubierta <= 0}
                 >
                   <Minus className="h-3.5 w-3.5" />
                 </Button>
-                <span className="w-20 text-center text-sm tabular-nums text-ink">
+                <span className="w-20 text-center text-sm tabular-nums text-foreground">
                   {i.cantidad_cubierta} / {i.cantidad_necesaria} {i.unidad ?? ""}
                 </span>
                 <Button
                   type="button"
                   variant="secondary"
-                  size="sm"
+                  size="icon-sm"
                   onClick={() => actualizarCubierta(i, 1)}
                   disabled={i.cantidad_cubierta >= i.cantidad_necesaria}
                 >
@@ -213,8 +213,8 @@ export function CentroEditor({
 
               <EstadoBadge estado={estadoDeInsumo(i)} />
 
-              <Button type="button" variant="ghost" size="sm" onClick={() => eliminarInsumo(i.id)}>
-                <Trash2 className="h-4 w-4 text-urgente" />
+              <Button type="button" variant="destructive" size="icon-sm" onClick={() => eliminarInsumo(i.id)}>
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           ))}
@@ -227,7 +227,7 @@ export function CentroEditor({
 function Campo({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-sm font-medium text-ink">{label}</span>
+      <span className="text-sm font-medium text-foreground">{label}</span>
       {children}
     </label>
   );

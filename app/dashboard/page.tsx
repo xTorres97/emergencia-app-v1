@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Plus } from "lucide-react";
 import { ESTADOS_VENEZUELA } from "@/types/database";
 
+const fieldClass =
+  "w-full rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+
 export default async function DashboardPage({
   searchParams,
 }: {
@@ -30,8 +33,8 @@ export default async function DashboardPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-bold text-ink">Tus centros de acopio</h1>
-        <p className="mt-1 text-sm text-muted">
+        <h1 className="text-xl font-bold text-foreground">Tus centros de acopio</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Selecciona un centro para actualizar sus necesidades, o crea uno nuevo.
         </p>
       </div>
@@ -44,18 +47,18 @@ export default async function DashboardPage({
         <div className="flex flex-col gap-3">
           {(centros as any[]).map((c) => (
             <a key={c.id} href={`/dashboard/${c.id}`}>
-              <Card className="p-4 transition-colors hover:bg-surface2">
-                <h2 className="font-semibold text-ink">{c.nombre}</h2>
-                <p className="mt-1 flex items-center gap-1.5 text-sm text-muted">
+              <Card className="p-4 transition-colors hover:bg-muted">
+                <h2 className="font-semibold text-foreground">{c.nombre}</h2>
+                <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4" />
                   {c.direccion}
                   {(c.zona || c.estado) && (
-                    <span className="font-medium text-ink">
+                    <span className="font-medium text-foreground">
                       · {[c.zona, c.estado].filter(Boolean).join(", ")}
                     </span>
                   )}
                 </p>
-                <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted">
+                <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Phone className="h-4 w-4" /> {c.contacto}
                 </p>
               </Card>
@@ -65,19 +68,18 @@ export default async function DashboardPage({
       )}
 
       <Card className="p-5">
-        <h2 className="mb-3 flex items-center gap-2 font-semibold text-ink">
+        <h2 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
           <Plus className="h-4 w-4" /> Crear nuevo centro de acopio
         </h2>
         <form action={crearCentro} className="flex flex-col gap-3">
           <Input name="nombre" required placeholder="Nombre del centro" />
           <Input name="direccion" required placeholder="Dirección completa" />
-          <select
-            name="estado"
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
-          >
+          <select name="estado" defaultValue="" className={fieldClass}>
             <option value="">— Estado (opcional) —</option>
             {ESTADOS_VENEZUELA.map((e) => (
-              <option key={e} value={e}>{e}</option>
+              <option key={e} value={e}>
+                {e}
+              </option>
             ))}
           </select>
           <Input name="zona" placeholder="Zona o ciudad (ej: Puerto Cabello, Morón...)" />

@@ -22,7 +22,7 @@ function FormularioLogin() {
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-4 py-10">
       <h1 className="mb-1 text-xl font-bold text-ink">Iniciar sesión</h1>
-      <p className="mb-6 text-sm text-muted">
+      <p className="mb-6 text-sm text-muted-foreground">
         Para gestionar las necesidades de tu centro de acopio.
       </p>
 
